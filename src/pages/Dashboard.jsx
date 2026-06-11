@@ -19,7 +19,7 @@ export default function Dashboard() {
 
   const handleRun = async (e) => {
     e.preventDefault();
-    if (!form.industry || !form.audience) return toast.error("Preencha os campos obrigatórios!");
+    if (!form.industry || !form.audience) return toast.error("Preencha os campos obrigatórios!".);
     
     setLoading(true);
     try {
