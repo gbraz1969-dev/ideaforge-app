@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
-import Landing from './pages/landing.jsx';
-import Dashboard from './pages/dashboard.jsx';
+import Landing from './pages/Landing.jsx';
+import Dashboard from './pages/Dashboard.jsx';
 import { Toaster } from 'sonner';
 
 export default function App() {
