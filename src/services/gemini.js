@@ -1,6 +1,7 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-const API_KEY = "AIzaSyBkZ6iLsa8pj2hJW997LKceMBlAql4hpbE"; // <-- COLOQUE SUA CHAVE AQUI
+// Agora o código puxa a chave de forma oculta!
+const API_KEY = import.meta.env.VITE_GEMINI_API_KEY; 
 const genAI = new GoogleGenerativeAI(API_KEY);
 
 export const generateIdea = async (industry, audience, extra) => {

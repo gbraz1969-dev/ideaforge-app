@@ -7,6 +7,10 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Cofre de senhas e chaves de API
+.env
+.env.*
+
 node_modules
 dist
 dist-ssr
