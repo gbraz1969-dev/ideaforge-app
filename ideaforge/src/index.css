@@ -1,7 +1,0 @@
-@import "tailwindcss";
-@config "../tailwind.config.js";
-
-body {
-  @apply bg-brand-beige text-black antialiased;
-  background-color: #F4F4F0 !important;
-}
