@@ -118,59 +118,61 @@ export default function Dashboard() {
       {/* COLUNA DIREITA */}
       <div className="lg:col-span-8 print:col-span-12">
         {idea && form.mode === 'feira' ? (
-         /* =========================================
-             MODO FEIRA: OUTDOOR DE ALTO IMPACTO (TURBINADO)
+        /* =========================================
+             MODO FEIRA: OUTDOOR RESPONSIVO E ROLÁVEL
              ========================================= */
-         <div className="fixed inset-0 z-50 bg-[#FFDE59] flex flex-col items-center py-12 px-6 text-center animate-in fade-in zoom-in duration-500 overflow-y-auto min-h-screen">
-            
-            {/* Selo de Inovação Flutuante */}
-            <div className="absolute top-10 left-10 bg-black text-white px-8 py-4 font-black text-3xl uppercase shadow-[8px_8px_0px_0px_#38B6FF] rotate-[-5deg] border-4 border-black">
-              Inovação: {idea.innovation_score}%
-            </div>
-
-            {/* Título Principal */}
-            <h1 className="text-7xl md:text-9xl font-black uppercase tracking-tighter border-8 border-black p-8 bg-white shadow-[16px_16px_0px_0px_rgba(0,0,0,1)] mb-8 z-10">
-              {idea.title}
-            </h1>
-            
-            {/* O Slogan / Pitch */}
-            <p className="text-4xl md:text-6xl font-bold bg-black text-[#FFDE59] p-8 max-w-6xl shadow-[8px_8px_0px_0px_#FF5757] mb-10 leading-tight z-10">
-              "{idea.pitch}"
-            </p>
-            
-            {/* Painel Duplo: MVP vs Killer Question */}
-            <div className="flex flex-col md:flex-row gap-8 max-w-7xl w-full justify-center mb-12 z-10">
+          <div className="fixed inset-0 z-50 bg-[#FFDE59] overflow-y-auto">
+            <div className="min-h-screen flex flex-col justify-center items-center p-6 md:p-12 text-center animate-in fade-in zoom-in duration-500 relative">
               
-              {/* Box do MVP e Custo */}
-              <div className="bg-white border-4 border-black p-8 w-full md:w-2/5 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] rotate-[-2deg] flex flex-col justify-center">
-                <h3 className="text-2xl font-black uppercase mb-4 text-[#38B6FF]">Como Testar Hoje:</h3>
-                <p className="text-3xl font-bold leading-tight mb-6">{idea.mvp?.feature}</p>
-                <div className="mt-auto">
-                  <span className="bg-[#FFDE59] px-4 py-2 text-2xl font-black uppercase border-4 border-black">
-                    Mercado: {idea.mvp?.market_trend}
-                  </span>
+              {/* Selo de Inovação Flutuante - Agora ajustado para não quebrar o scroll */}
+              <div className="md:absolute top-8 left-8 bg-black text-white px-6 py-3 font-black text-2xl uppercase shadow-[6px_6px_0px_0px_#38B6FF] rotate-[-5deg] border-4 border-black mb-8 md:mb-0 z-20">
+                Inovação: {idea.innovation_score}%
+              </div>
+
+              {/* Título Principal */}
+              <h1 className="text-6xl md:text-8xl font-black uppercase tracking-tighter border-8 border-black p-6 md:p-8 bg-white shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] mb-8 z-10 max-w-7xl mt-4 md:mt-12">
+                {idea.title}
+              </h1>
+              
+              {/* O Slogan / Pitch */}
+              <p className="text-3xl md:text-5xl font-bold bg-black text-[#FFDE59] p-6 md:p-8 max-w-6xl shadow-[8px_8px_0px_0px_#FF5757] mb-12 leading-tight z-10">
+                "{idea.pitch}"
+              </p>
+              
+              {/* Painel Duplo: MVP vs Killer Question */}
+              <div className="flex flex-col lg:flex-row gap-8 max-w-7xl w-full justify-center mb-12 z-10">
+                
+                {/* Box do Mercado */}
+                <div className="bg-white border-4 border-black p-8 w-full lg:w-2/5 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] rotate-[-2deg] flex flex-col justify-center">
+                  <h3 className="text-2xl font-black uppercase mb-4 text-[#38B6FF]">Validação (MVP):</h3>
+                  <p className="text-2xl md:text-3xl font-bold leading-tight mb-8">{idea.mvp?.feature}</p>
+                  <div className="mt-auto">
+                    <span className="bg-[#FFDE59] px-4 py-2 text-xl md:text-2xl font-black uppercase border-4 border-black inline-block">
+                      Mercado: {idea.mvp?.market_trend}
+                    </span>
+                  </div>
                 </div>
+                
+                {/* Box da Killer Question */}
+                <div className="bg-[#FF5757] text-white border-4 border-black p-8 w-full lg:w-3/5 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] rotate-2 flex flex-col justify-center">
+                  <h3 className="text-2xl font-black uppercase mb-4 text-black">A Pergunta Fatal:</h3>
+                  <p className="text-3xl md:text-4xl font-black italic tracking-tight leading-tight">
+                    "{idea.killer_question}"
+                  </p>
+                </div>
+
               </div>
               
-              {/* Box da Killer Question */}
-              <div className="bg-[#FF5757] text-white border-4 border-black p-8 w-full md:w-3/5 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] rotate-2 flex flex-col justify-center">
-                <h3 className="text-2xl font-black uppercase mb-4 text-black">A Pergunta Fatal:</h3>
-                <p className="text-4xl md:text-5xl font-black italic tracking-tight leading-tight">
-                  "{idea.killer_question}"
-                </p>
-              </div>
-
+              <button 
+                onClick={() => setIdea(null)} 
+                className="mt-4 mb-12 bg-white border-4 border-black px-12 py-4 font-black uppercase text-2xl md:text-3xl shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all z-10"
+              >
+                Forjar Nova Ideia
+              </button>
+              
             </div>
-            
-            <button 
-              onClick={() => setIdea(null)} 
-              className="mt-4 bg-white border-4 border-black px-12 py-4 font-black uppercase text-3xl shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all z-10"
-            >
-              Forjar Nova Ideia
-            </button>
-            
           </div>
-
+          
         ) : idea ? (
           <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4">
             
@@ -295,7 +297,7 @@ export default function Dashboard() {
               <div className="border-4 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
                 <h4 className="font-black uppercase flex items-center gap-2 mb-2 text-[#38B6FF]"><Rocket size={20} /> MVP Core</h4>
                 <p className="text-sm font-bold">{idea.mvp?.feature}</p>
-                <p className="text-[10px] font-black mt-2 bg-[#FFDE59] inline-block px-2 border-2 border-black">Custo: {idea.mvp?.cost}</p>
+                <p className="text-[10px] font-black mt-2 bg-[#FFDE59] inline-block px-2 border-2 border-black">Mercado: {idea.mvp?.market_trend}</p>
               </div>
               <div className="border-4 border-black bg-black text-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
                 <h4 className="font-black uppercase flex items-center gap-2 mb-2 text-[#FF5757]"><HelpCircle size={20} /> Killer Question</h4>
