@@ -118,30 +118,55 @@ export default function Dashboard() {
       {/* COLUNA DIREITA */}
       <div className="lg:col-span-8 print:col-span-12">
         {idea && form.mode === 'feira' ? (
-          /* =========================================
-             MODO FEIRA: CARTAZ GIGANTE DE ALTO IMPACTO
+         /* =========================================
+             MODO FEIRA: OUTDOOR DE ALTO IMPACTO (TURBINADO)
              ========================================= */
-          <div className="fixed inset-0 z-50 bg-brand-yellow flex flex-col justify-center items-center p-10 text-center animate-in fade-in zoom-in duration-500">
+          <div className="fixed inset-0 z-50 bg-[#FFDE59] flex flex-col justify-center items-center p-10 text-center animate-in fade-in zoom-in duration-500 overflow-hidden">
             
-            <h1 className="text-7xl md:text-9xl font-black uppercase tracking-tighter border-8 border-black p-8 bg-white shadow-[16px_16px_0px_0px_rgba(0,0,0,1)] mb-12">
+            {/* Selo de Inovação Flutuante */}
+            <div className="absolute top-10 left-10 bg-black text-white px-8 py-4 font-black text-3xl uppercase shadow-[8px_8px_0px_0px_#38B6FF] rotate-[-5deg] border-4 border-black">
+              Inovação: {idea.innovation_score}%
+            </div>
+
+            {/* Título Principal */}
+            <h1 className="text-7xl md:text-9xl font-black uppercase tracking-tighter border-8 border-black p-8 bg-white shadow-[16px_16px_0px_0px_rgba(0,0,0,1)] mb-8 z-10">
               {idea.title}
             </h1>
             
-            <p className="text-4xl md:text-6xl font-bold bg-black text-white p-8 max-w-6xl shadow-[8px_8px_0px_0px_rgba(255,87,87,1)] mb-12 leading-tight">
+            {/* O Slogan / Pitch */}
+            <p className="text-4xl md:text-6xl font-bold bg-black text-[#FFDE59] p-8 max-w-6xl shadow-[8px_8px_0px_0px_#FF5757] mb-10 leading-tight z-10">
               "{idea.pitch}"
             </p>
             
-            <div className="bg-brand-red text-white border-4 border-black p-6 rotate-2 max-w-4xl shadow-neo">
-              <h3 className="text-2xl font-black uppercase mb-2">A Pergunta Fatal:</h3>
-              <p className="text-3xl font-bold italic">{idea.killer_question}</p>
+            {/* Painel Duplo: MVP vs Killer Question */}
+            <div className="flex flex-col md:flex-row gap-8 max-w-7xl w-full justify-center mb-12 z-10">
+              
+              {/* Box do MVP e Custo */}
+              <div className="bg-white border-4 border-black p-8 w-full md:w-2/5 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] rotate-[-2deg] flex flex-col justify-center">
+                <h3 className="text-2xl font-black uppercase mb-4 text-[#38B6FF]">Como Testar Hoje:</h3>
+                <p className="text-3xl font-bold leading-tight mb-6">{idea.mvp?.feature}</p>
+                <div className="mt-auto">
+                  <span className="bg-[#FFDE59] px-4 py-2 text-2xl font-black uppercase border-4 border-black">
+                    Custo: {idea.mvp?.cost}
+                  </span>
+                </div>
+              </div>
+              
+              {/* Box da Killer Question */}
+              <div className="bg-[#FF5757] text-white border-4 border-black p-8 w-full md:w-3/5 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] rotate-2 flex flex-col justify-center">
+                <h3 className="text-2xl font-black uppercase mb-4 text-black">A Pergunta Fatal:</h3>
+                <p className="text-4xl md:text-5xl font-black italic tracking-tight leading-tight">
+                  "{idea.killer_question}"
+                </p>
+              </div>
+
             </div>
             
-            {/* Botão gigante para fechar o cartaz e voltar para a feira */}
             <button 
               onClick={() => setIdea(null)} 
-              className="mt-16 bg-white border-4 border-black px-12 py-4 font-black uppercase text-3xl shadow-neo hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all"
+              className="mt-4 bg-white border-4 border-black px-12 py-4 font-black uppercase text-3xl shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all z-10"
             >
-              Forjar Outra
+              Forjar Nova Ideia
             </button>
             
           </div>
