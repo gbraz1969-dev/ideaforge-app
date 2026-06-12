@@ -4,7 +4,7 @@ const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 const genAI = new GoogleGenerativeAI(API_KEY);
 
 export const generateIdea = async (industry, audience, extra, mode) => {
-  // A configuração de ouro que força a IA a não enviar texto nenhum, apenas código:
+  // A configuração de ouro que força a IA a não enviar texto nenhum, apenas código JSON
   const model = genAI.getGenerativeModel({ 
     model: "gemini-1.5-flash",
     generationConfig: { responseMimeType: "application/json" }
@@ -29,7 +29,6 @@ export const generateIdea = async (industry, audience, extra, mode) => {
 
   try {
     const result = await model.generateContent(prompt);
-    // Como bloqueámos o texto na origem, já nem precisamos de limpar a formatação
     return JSON.parse(result.response.text());
   } catch (error) {
     console.error("Erro na Forja:", error);
