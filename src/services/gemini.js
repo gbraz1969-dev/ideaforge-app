@@ -12,10 +12,10 @@ export const generateIdea = async (industry, audience, extra, mode) => {
   
  const prompt = `Atue como um consultor de negócios experiente. Gere uma ideia de negócio inovadora para o setor de ${industry}, focada no público ${audience}. Contexto adicional: ${extra}.
   
-  MUITO IMPORTANTE - CENÁRIO EDUCACIONAL: "${mode}".
+   MUITO IMPORTANTE - CENÁRIO EDUCACIONAL: "${mode}".
   REGRAS DE ESTILO:
-  - Se o cenário for "Feira": As respostas devem ser EXTREMAMENTE curtas, de alto impacto visual e comercial. Use frases de meia linha, estilo "slogan" e direto ao ponto. Ninguém tem tempo para ler num stand!
-  - Se for "Aula" ou "Ideathon": Pode ser um pouco mais aprofundado e analítico.
+  - Se o cenário for "Feira": Use técnicas agressivas de copywriting publicitário. O 'pitch' deve ser um slogan explosivo e inesquecível. O custo deve ser substituido por "Área da Administração Focada" (Marketing, Logística, Finanças, RH). A 'killer_question' tem que ser um soco no estômago que faça o visitante duvidar do status quo.
+  - Se for "Aula" ou "Ideathon": Mantenha o tom analítico e aprofundado para debate acadêmico.
   
   O JSON deve conter EXATAMENTE estas chaves em inglês:
   - title (string)
@@ -27,7 +27,7 @@ export const generateIdea = async (industry, audience, extra, mode) => {
   - finance (objeto com strings: ticket, cac, breakeven)
   - design_thinking (objeto com strings: desirability, feasibility, viability)
   - experiment (string: uma sugestão prática de experimento para testar a ideia)
-  - mvp (objeto com strings: feature, cost)
+  - mvp (objeto com strings: feature, market_trend) // market_trend deve ser uma característica do mercado (ex: Estagnado, Crescimento Acelerado, Oceano Azul)
   - killer_question (string: uma pergunta provocativa e reflexiva que desafia a ideia)`;
 
   try {

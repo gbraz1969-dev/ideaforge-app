@@ -121,7 +121,7 @@ export default function Dashboard() {
          /* =========================================
              MODO FEIRA: OUTDOOR DE ALTO IMPACTO (TURBINADO)
              ========================================= */
-          <div className="fixed inset-0 z-50 bg-[#FFDE59] flex flex-col justify-center items-center p-10 text-center animate-in fade-in zoom-in duration-500 overflow-hidden">
+         <div className="fixed inset-0 z-50 bg-[#FFDE59] flex flex-col items-center py-12 px-6 text-center animate-in fade-in zoom-in duration-500 overflow-y-auto min-h-screen">
             
             {/* Selo de Inovação Flutuante */}
             <div className="absolute top-10 left-10 bg-black text-white px-8 py-4 font-black text-3xl uppercase shadow-[8px_8px_0px_0px_#38B6FF] rotate-[-5deg] border-4 border-black">
@@ -147,7 +147,7 @@ export default function Dashboard() {
                 <p className="text-3xl font-bold leading-tight mb-6">{idea.mvp?.feature}</p>
                 <div className="mt-auto">
                   <span className="bg-[#FFDE59] px-4 py-2 text-2xl font-black uppercase border-4 border-black">
-                    Custo: {idea.mvp?.cost}
+                    Mercado: {idea.mvp?.market_trend}
                   </span>
                 </div>
               </div>
