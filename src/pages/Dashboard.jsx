@@ -5,7 +5,7 @@ import {
   Target, LayoutDashboard, Printer, Rocket, HelpCircle, TrendingUp, DollarSign 
 } from 'lucide-react';
 import { toast } from 'sonner';
-
+import confetti from 'canvas-confetti';
 export default function Dashboard() {
   const [form, setForm] = useState({ industry: '', audience: '', extra: '', mode: 'aula' });
   const [loading, setLoading] = useState(false);
@@ -31,12 +31,21 @@ export default function Dashboard() {
       localStorage.setItem('forge_history', JSON.stringify(newHistory));
       
       toast.success("Ideia forjada com sucesso!");
+      
+      // A explosão festiva com as cores da sua marca!
+      confetti({
+        particleCount: 150,
+        spread: 80,
+        origin: { y: 0.6 },
+        colors: ['#FFDE59', '#38B6FF', '#FF5757', '#000000'] 
+      });
     } catch (err) {
       toast.error("Erro na forja. Verifique a sua conexão.");
       console.error(err);
     } finally {
     setLoading(false);
     }
+    
   };
 
   const handlePrint = () => window.print();
