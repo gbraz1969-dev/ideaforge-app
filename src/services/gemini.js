@@ -5,6 +5,7 @@ const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 const genAI = new GoogleGenerativeAI(API_KEY);
 
 export const generateIdea = async (industry, audience, extra, mode) => {
+  // Usando a versão oficial e estável 1.5
   const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
   
   const prompt = `Atue como um consultor de negócios experiente. Gere uma ideia de negócio inovadora para o setor de ${industry}, focada no público ${audience}. Contexto adicional: ${extra}.
