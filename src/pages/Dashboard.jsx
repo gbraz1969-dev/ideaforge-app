@@ -35,7 +35,7 @@ export default function Dashboard() {
       toast.error("Erro na forja. Verifique a sua conexão.");
       console.error(err);
     } finally {
-      loading && setLoading(false);
+    setLoading(false);
     }
   };
 

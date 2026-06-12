@@ -13,7 +13,7 @@ export default function App() {
           <Link to="/" className="text-3xl font-black uppercase tracking-tighter">IdeaForge</Link>
           <div className="flex gap-4">
             <Link to="/" className="font-black uppercase hover:underline">Home</Link>
-            <Link to="/forge" className="bg-brand-yellow px-4 py-1 border-2 border-black font-black uppercase shadow-neo">Novo</Link>
+            <a href="/forge" className="bg-brand-yellow px-4 py-1 border-2 border-black font-black uppercase shadow-neo">Novo</a>
           </div>
         </div>
       </nav>

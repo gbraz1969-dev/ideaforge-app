@@ -10,9 +10,12 @@ export const generateIdea = async (industry, audience, extra, mode) => {
     generationConfig: { responseMimeType: "application/json" }
   });
   
-  const prompt = `Atue como um consultor de negócios experiente. Gere uma ideia de negócio inovadora para o setor de ${industry}, focada no público ${audience}. Contexto adicional: ${extra}.
+ const prompt = `Atue como um consultor de negócios experiente. Gere uma ideia de negócio inovadora para o setor de ${industry}, focada no público ${audience}. Contexto adicional: ${extra}.
   
-  MUITO IMPORTANTE: O nível de complexidade e o tom desta ideia devem ser ajustados para o cenário educacional: "${mode}".
+  MUITO IMPORTANTE - CENÁRIO EDUCACIONAL: "${mode}".
+  REGRAS DE ESTILO:
+  - Se o cenário for "Feira": As respostas devem ser EXTREMAMENTE curtas, de alto impacto visual e comercial. Use frases de meia linha, estilo "slogan" e direto ao ponto. Ninguém tem tempo para ler num stand!
+  - Se for "Aula" ou "Ideathon": Pode ser um pouco mais aprofundado e analítico.
   
   O JSON deve conter EXATAMENTE estas chaves em inglês:
   - title (string)
