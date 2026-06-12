@@ -4,9 +4,9 @@ const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 const genAI = new GoogleGenerativeAI(API_KEY);
 
 export const generateIdea = async (industry, audience, extra, mode) => {
-  // A configuração de ouro que força a IA a não enviar texto nenhum, apenas código JSON
+  // Atualizando para o motor atual e mais veloz do Gemini
   const model = genAI.getGenerativeModel({ 
-    model: "gemini-1.5-flash",
+    model: "gemini-2.5-flash",
     generationConfig: { responseMimeType: "application/json" }
   });
   
