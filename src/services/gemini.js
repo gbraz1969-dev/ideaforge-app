@@ -1,18 +1,20 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-// Puxando a chave do cofre invisível!
 const API_KEY = import.meta.env.VITE_GEMINI_API_KEY; 
 const genAI = new GoogleGenerativeAI(API_KEY);
 
 export const generateIdea = async (industry, audience, extra, mode) => {
-  // Usando a versão oficial e estável 1.5
-  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+  // A configuração de ouro que força a IA a não enviar texto nenhum, apenas código:
+  const model = genAI.getGenerativeModel({ 
+    model: "gemini-1.5-flash",
+    generationConfig: { responseMimeType: "application/json" }
+  });
   
   const prompt = `Atue como um consultor de negócios experiente. Gere uma ideia de negócio inovadora para o setor de ${industry}, focada no público ${audience}. Contexto adicional: ${extra}.
   
-  MUITO IMPORTANTE: O nível de complexidade e o tom desta ideia devem ser ajustados para o seguinte cenário educacional: "${mode}".
+  MUITO IMPORTANTE: O nível de complexidade e o tom desta ideia devem ser ajustados para o cenário educacional: "${mode}".
   
-  Retorne ESTRITAMENTE um objeto JSON válido, sem formatação markdown em volta. O JSON deve conter EXATAMENTE estas chaves em inglês:
+  O JSON deve conter EXATAMENTE estas chaves em inglês:
   - title (string)
   - pitch (string: uma frase de impacto curta e comercial)
   - description (string: explicação clara do negócio)
@@ -27,9 +29,8 @@ export const generateIdea = async (industry, audience, extra, mode) => {
 
   try {
     const result = await model.generateContent(prompt);
-    // Limpeza pesada caso a IA mande formatação de bloco de código
-    const text = result.response.text().replace(/```json/gi, "").replace(/```/g, "").trim();
-    return JSON.parse(text);
+    // Como bloqueámos o texto na origem, já nem precisamos de limpar a formatação
+    return JSON.parse(result.response.text());
   } catch (error) {
     console.error("Erro na Forja:", error);
     throw error;
