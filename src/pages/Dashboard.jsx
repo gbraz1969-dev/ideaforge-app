@@ -379,10 +379,10 @@ export default function Dashboard() {
               className="h-24 md:h-32 mb-8 bg-white border-4 border-black p-3 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] animate-bounce hover:animate-none transition-all" 
             />
             <h2 className="text-6xl md:text-8xl font-black uppercase tracking-tighter mb-6 leading-none text-black">
-              FORJE O SEU <br/> <span className="bg-black text-[#FFDE59] px-4 border-4 border-black">IMPÉRIO</span>
+              FORJE O SEU <br/> <span className="bg-black text-[#FFDE59] px-4 border-4 border-black">FUTURO</span>
             </h2>
             <p className="text-xl md:text-3xl font-bold max-w-3xl bg-white border-4 border-black p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] mb-8 leading-tight">
-              Preencha os dados ao lado e deixe a nossa IA criar uma startup bilionária para você administrar.
+              Preencha os dados ao lado e deixe a nossa IA criar uma startup INOVADORA para você administrar.
             </p>
             <div className="flex flex-wrap justify-center gap-4 mt-4">
               <span className="bg-[#38B6FF] border-4 border-black p-3 font-black uppercase flex items-center gap-2 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
