@@ -7,7 +7,7 @@ import {
 import { toast } from 'sonner';
 import confetti from 'canvas-confetti';
 export default function Dashboard() {
-  const [form, setForm] = useState({ industry: '', audience: '', extra: '', mode: 'aula' });
+  const [form, setForm] = useState({ industry: '', audience: '', extra: '', mode: 'feira', name: '', phone: '' });
   const [loading, setLoading] = useState(false);
   const [idea, setIdea] = useState(null);
   const [history, setHistory] = useState([]);
@@ -19,18 +19,38 @@ export default function Dashboard() {
 
   const handleRun = async (e) => {
     e.preventDefault();
-    if (!form.industry || !form.audience) return toast.error("Preencha os campos obrigatórios!");
+    
+    // Trava de segurança para o Modo Feira: exige nome e whatsapp
+    if (form.mode === 'feira' && (!form.name || !form.phone || !form.industry)) {
+      return toast.error("Preencha seu Nome, WhatsApp e o Setor para forjar!");
+    } else if (form.mode !== 'feira' && (!form.industry || !form.audience)) {
+      return toast.error("Preencha os campos obrigatórios!");
+    }
     
     setLoading(true);
     try {
       const data = await generateIdea(form.industry, form.audience, form.extra, form.mode);
       setIdea(data);
       
+      // Salva o histórico de ideias
       const newHistory = [data, ...history].slice(0, 5);
       setHistory(newHistory);
       localStorage.setItem('forge_history', JSON.stringify(newHistory));
+
+      // MÁQUINA DE LEADS: Salva o contato do candidato silenciosamente
+      if (form.mode === 'feira') {
+        const savedLeads = JSON.parse(localStorage.getItem('uniara_leads') || '[]');
+        savedLeads.push({ 
+          nome: form.name, 
+          whatsapp: form.phone, 
+          setor: form.industry,
+          ideia: data.title,
+          data: new Date().toLocaleDateString()
+        });
+        localStorage.setItem('uniara_leads', JSON.stringify(savedLeads));
+      }
       
-      toast.success("Ideia forjada com sucesso!");
+      toast.success("Ideia forjada com sucesso!")
       
       // A explosão festiva com as cores da sua marca!
       confetti({
@@ -80,7 +100,23 @@ export default function Dashboard() {
               <option value="ideathon">🔴 IDEATHON (Rigoroso & Competitivo)</option>
             </select>
           </div>
-          
+          {/* CAMPOS EXCLUSIVOS DO MODO FEIRA (CAPTAÇÃO DE LEADS) */}
+          {form.mode === 'feira' && (
+            <div className="p-4 border-4 border-black bg-[#38B6FF] space-y-3 shadow-neo mb-4">
+              <h3 className="font-black uppercase text-sm flex items-center gap-2">🎓 Cadastro do Futuro CEO</h3>
+              <input 
+                className="w-full border-4 border-black p-3 font-bold outline-none" 
+                placeholder="Seu Nome (Ex: João)" 
+                onChange={e => setForm({...form, name: e.target.value})} 
+              />
+              <input 
+                className="w-full border-4 border-black p-3 font-bold outline-none" 
+                placeholder="Seu WhatsApp" 
+                type="tel"
+                onChange={e => setForm({...form, phone: e.target.value})} 
+              />
+            </div>
+          )}
           <div className="space-y-1">
             <label className="text-[10px] font-black uppercase tracking-wider">Setor</label>
             <input className="w-full border-4 border-black p-3 font-bold focus:bg-[#FFDE59] outline-none" placeholder="Ex: Fintech" onChange={e => setForm({...form, industry: e.target.value})} />
@@ -115,7 +151,7 @@ export default function Dashboard() {
         )}
       </div>
 
-      {/* COLUNA DIREITA */}
+     {/* COLUNA DIREITA */}
       <div className="lg:col-span-8 print:col-span-12">
         {idea && form.mode === 'feira' ? (
         /* =========================================
@@ -128,6 +164,13 @@ export default function Dashboard() {
               <div className="md:absolute top-8 left-8 bg-black text-white px-6 py-3 font-black text-2xl uppercase shadow-[6px_6px_0px_0px_#38B6FF] rotate-[-5deg] border-4 border-black mb-8 md:mb-0 z-20">
                 Inovação: {idea.innovation_score}%
               </div>
+
+              {/* Logo UNIARA no canto superior direito */}
+              <img 
+                src="/logo-uniara.png" 
+                alt="UNIARA" 
+                className="md:absolute top-8 right-8 z-20 h-16 md:h-20 bg-white border-4 border-black p-2 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] mb-4 md:mb-0" 
+              />
 
               {/* Título Principal */}
               <h1 className="text-6xl md:text-8xl font-black uppercase tracking-tighter border-8 border-black p-6 md:p-8 bg-white shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] mb-8 z-10 max-w-7xl mt-4 md:mt-12">
@@ -167,6 +210,17 @@ export default function Dashboard() {
                 onClick={() => setIdea(null)} 
                 className="mt-4 mb-12 bg-white border-4 border-black px-12 py-4 font-black uppercase text-2xl md:text-3xl shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all z-10"
               >
+                {/* O PAPEL DO ADMINISTRADOR (CALL TO ACTION UNIARA) */}
+              {idea.admin_role && (
+                <div className="flex flex-col items-center gap-2 mt-4 mb-8 z-10 max-w-5xl w-full">
+                  <span className="text-xl md:text-2xl font-black uppercase tracking-widest bg-white border-4 border-black px-6 py-2 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] rotate-[-1deg]">
+                    💼 Missão do CEO {form.name} cursando ADMINISTRAÇÃO NA UNIARA:
+                  </span>
+                  <p className="text-2xl md:text-3xl font-bold bg-[#7ED957] text-black border-4 border-black p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] text-center w-full hover:translate-y-1 transition-transform">
+                    {idea.admin_role}
+                  </p>
+                </div>
+              )}
                 Forjar Nova Ideia
               </button>
               
