@@ -209,12 +209,35 @@ export default function Dashboard() {
                 </div>
               )}
               
-              <button 
-                onClick={() => setIdea(null)} 
-                className="mt-4 mb-12 bg-white border-4 border-black px-12 py-4 font-black uppercase text-2xl md:text-3xl shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all z-10"
-              >
-                Forjar Nova Ideia
-              </button>
+              <div className="flex flex-wrap justify-center gap-4 mt-4 mb-12 z-10 w-full max-w-5xl print:hidden">
+                
+                {/* 1. BOTÃO VOLTAR / REINICIAR */}
+                <button 
+                  onClick={() => setIdea(null)} 
+                  className="bg-white border-4 border-black px-8 py-4 font-black uppercase text-xl shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all"
+                >
+                  Voltar
+                </button>
+
+                {/* 2. BOTÃO SALVAR PDF */}
+                <button 
+                  onClick={handlePrint} 
+                  className="bg-[#38B6FF] border-4 border-black px-8 py-4 font-black uppercase text-xl shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all flex items-center gap-2"
+                >
+                  <Printer size={24} /> Salvar PDF
+                </button>
+
+                {/* 3. BOTÃO WHATSAPP (Abre link direto pro número do aluno) */}
+                <a 
+                  href={`https://wa.me/55${form.phone.replace(/\D/g, '')}?text=Fala%20${encodeURIComponent(form.name)}!%20Sua%20ideia%20genial%20*${encodeURIComponent(idea.title)}*%20nasceu%20hoje%20na%20UNIARA.%20O%20pr%C3%B3ximo%20passo%20para%20virar%20CEO%20%C3%A9%20aqui%20com%20a%20gente%20na%20Administra%C3%A7%C3%A3o!%20%F0%9F%9A%80`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-[#7ED957] border-4 border-black px-8 py-4 font-black uppercase text-xl shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all flex items-center gap-2"
+                >
+                  WhatsApp
+                </a>
+
+              </div>
               
             </div>
           </div>
