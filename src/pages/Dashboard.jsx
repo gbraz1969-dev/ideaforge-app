@@ -6,7 +6,9 @@ import {
 } from 'lucide-react';
 import { toast } from 'sonner';
 import confetti from 'canvas-confetti';
+
 export default function Dashboard() {
+  // Estado do formulário atualizado com name e phone
   const [form, setForm] = useState({ industry: '', audience: '', extra: '', mode: 'feira', name: '', phone: '' });
   const [loading, setLoading] = useState(false);
   const [idea, setIdea] = useState(null);
@@ -20,9 +22,9 @@ export default function Dashboard() {
   const handleRun = async (e) => {
     e.preventDefault();
     
-    // Trava de segurança para o Modo Feira: exige nome e whatsapp
-    if (form.mode === 'feira' && (!form.name || !form.phone || !form.industry)) {
-      return toast.error("Preencha seu Nome, WhatsApp e o Setor para forjar!");
+    // Travas de segurança e validação
+    if (form.mode === 'feira' && (!form.name || !form.phone || !form.industry || !form.audience)) {
+      return toast.error("Preencha Nome, WhatsApp, Setor e Público para forjar!");
     } else if (form.mode !== 'feira' && (!form.industry || !form.audience)) {
       return toast.error("Preencha os campos obrigatórios!");
     }
@@ -32,12 +34,11 @@ export default function Dashboard() {
       const data = await generateIdea(form.industry, form.audience, form.extra, form.mode);
       setIdea(data);
       
-      // Salva o histórico de ideias
       const newHistory = [data, ...history].slice(0, 5);
       setHistory(newHistory);
       localStorage.setItem('forge_history', JSON.stringify(newHistory));
-
-      // MÁQUINA DE LEADS: Salva o contato do candidato silenciosamente
+      
+      // MÁQUINA DE LEADS: Salva o contato silenciosamente
       if (form.mode === 'feira') {
         const savedLeads = JSON.parse(localStorage.getItem('uniara_leads') || '[]');
         savedLeads.push({ 
@@ -49,10 +50,9 @@ export default function Dashboard() {
         });
         localStorage.setItem('uniara_leads', JSON.stringify(savedLeads));
       }
+
+      toast.success("Ideia forjada com sucesso!");
       
-      toast.success("Ideia forjada com sucesso!")
-      
-      // A explosão festiva com as cores da sua marca!
       confetti({
         particleCount: 150,
         spread: 80,
@@ -63,31 +63,28 @@ export default function Dashboard() {
       toast.error("Erro na forja. Verifique a sua conexão.");
       console.error(err);
     } finally {
-    setLoading(false);
+      setLoading(false);
     }
-    
   };
 
   const handlePrint = () => window.print();
 
-  // Função para definir a cor do termômetro baseado no score
   const getScoreColor = (score) => {
-    if (score > 80) return 'bg-[#FF5757]'; // Muito Disruptivo (Vermelho)
-    if (score > 50) return 'bg-[#38B6FF]'; // Inovador (Azul)
-    return 'bg-[#7ED957]'; // Estável (Verde)
+    if (score > 80) return 'bg-[#FF5757]'; 
+    if (score > 50) return 'bg-[#38B6FF]'; 
+    return 'bg-[#7ED957]'; 
   };
 
   return (
     <div className="max-w-7xl mx-auto p-6 grid lg:grid-cols-12 gap-8 pb-20">
       
-      {/* COLUNA ESQUERDA */}
+      {/* COLUNA ESQUERDA: FORMULÁRIO */}
       <div className="lg:col-span-4 space-y-6 print:hidden">
         <form onSubmit={handleRun} className="border-4 border-black bg-white p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] space-y-4">
           <h2 className="text-2xl font-black uppercase flex items-center gap-2 italic">
             <Zap className="fill-current text-[#FFDE59]" /> Lab de Ideias
           </h2>
 
-          {/* SELETOR DE MODO */}
           <div className="space-y-1">
             <label className="text-[10px] font-black uppercase tracking-wider">Modo de Operação</label>
             <select 
@@ -100,23 +97,27 @@ export default function Dashboard() {
               <option value="ideathon">🔴 IDEATHON (Rigoroso & Competitivo)</option>
             </select>
           </div>
+
           {/* CAMPOS EXCLUSIVOS DO MODO FEIRA (CAPTAÇÃO DE LEADS) */}
           {form.mode === 'feira' && (
-            <div className="p-4 border-4 border-black bg-[#38B6FF] space-y-3 shadow-neo mb-4">
-              <h3 className="font-black uppercase text-sm flex items-center gap-2">🎓 Cadastro do Futuro CEO</h3>
+            <div className="p-4 border-4 border-black bg-[#38B6FF] space-y-3 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] mb-4">
+              <h3 className="font-black uppercase text-xs flex items-center gap-2">🎓 Cadastro do Futuro CEO</h3>
               <input 
-                className="w-full border-4 border-black p-3 font-bold outline-none" 
+                className="w-full border-4 border-black p-2 font-bold outline-none text-sm" 
                 placeholder="Seu Nome (Ex: João)" 
+                value={form.name}
                 onChange={e => setForm({...form, name: e.target.value})} 
               />
               <input 
-                className="w-full border-4 border-black p-3 font-bold outline-none" 
+                className="w-full border-4 border-black p-2 font-bold outline-none text-sm" 
                 placeholder="Seu WhatsApp" 
                 type="tel"
+                value={form.phone}
                 onChange={e => setForm({...form, phone: e.target.value})} 
               />
             </div>
           )}
+          
           <div className="space-y-1">
             <label className="text-[10px] font-black uppercase tracking-wider">Setor</label>
             <input className="w-full border-4 border-black p-3 font-bold focus:bg-[#FFDE59] outline-none" placeholder="Ex: Fintech" onChange={e => setForm({...form, industry: e.target.value})} />
@@ -151,41 +152,34 @@ export default function Dashboard() {
         )}
       </div>
 
-     {/* COLUNA DIREITA */}
+      {/* COLUNA DIREITA: RESULTADOS */}
       <div className="lg:col-span-8 print:col-span-12">
         {idea && form.mode === 'feira' ? (
-        /* =========================================
-             MODO FEIRA: OUTDOOR RESPONSIVO E ROLÁVEL
+          /* =========================================
+             MODO FEIRA: OUTDOOR DE ALTO IMPACTO UNIARA
              ========================================= */
           <div className="fixed inset-0 z-50 bg-[#FFDE59] overflow-y-auto">
             <div className="min-h-screen flex flex-col justify-center items-center p-6 md:p-12 text-center animate-in fade-in zoom-in duration-500 relative">
               
-              {/* Selo de Inovação Flutuante - Agora ajustado para não quebrar o scroll */}
               <div className="md:absolute top-8 left-8 bg-black text-white px-6 py-3 font-black text-2xl uppercase shadow-[6px_6px_0px_0px_#38B6FF] rotate-[-5deg] border-4 border-black mb-8 md:mb-0 z-20">
                 Inovação: {idea.innovation_score}%
               </div>
 
-              {/* Logo UNIARA no canto superior direito */}
               <img 
                 src="/logo-uniara.png" 
                 alt="UNIARA" 
                 className="md:absolute top-8 right-8 z-20 h-16 md:h-20 bg-white border-4 border-black p-2 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] mb-4 md:mb-0" 
               />
 
-              {/* Título Principal */}
               <h1 className="text-6xl md:text-8xl font-black uppercase tracking-tighter border-8 border-black p-6 md:p-8 bg-white shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] mb-8 z-10 max-w-7xl mt-4 md:mt-12">
                 {idea.title}
               </h1>
               
-              {/* O Slogan / Pitch */}
               <p className="text-3xl md:text-5xl font-bold bg-black text-[#FFDE59] p-6 md:p-8 max-w-6xl shadow-[8px_8px_0px_0px_#FF5757] mb-12 leading-tight z-10">
                 "{idea.pitch}"
               </p>
               
-              {/* Painel Duplo: MVP vs Killer Question */}
-              <div className="flex flex-col lg:flex-row gap-8 max-w-7xl w-full justify-center mb-12 z-10">
-                
-                {/* Box do Mercado */}
+              <div className="flex flex-col lg:flex-row gap-8 max-w-7xl w-full justify-center mb-8 z-10">
                 <div className="bg-white border-4 border-black p-8 w-full lg:w-2/5 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] rotate-[-2deg] flex flex-col justify-center">
                   <h3 className="text-2xl font-black uppercase mb-4 text-[#38B6FF]">Validação (MVP):</h3>
                   <p className="text-2xl md:text-3xl font-bold leading-tight mb-8">{idea.mvp?.feature}</p>
@@ -196,21 +190,14 @@ export default function Dashboard() {
                   </div>
                 </div>
                 
-                {/* Box da Killer Question */}
                 <div className="bg-[#FF5757] text-white border-4 border-black p-8 w-full lg:w-3/5 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] rotate-2 flex flex-col justify-center">
                   <h3 className="text-2xl font-black uppercase mb-4 text-black">A Pergunta Fatal:</h3>
                   <p className="text-3xl md:text-4xl font-black italic tracking-tight leading-tight">
                     "{idea.killer_question}"
                   </p>
                 </div>
-
               </div>
-              
-              <button 
-                onClick={() => setIdea(null)} 
-                className="mt-4 mb-12 bg-white border-4 border-black px-12 py-4 font-black uppercase text-2xl md:text-3xl shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all z-10"
-              >
-                {/* O PAPEL DO ADMINISTRADOR (CALL TO ACTION UNIARA) */}
+
               {idea.admin_role && (
                 <div className="flex flex-col items-center gap-2 mt-4 mb-8 z-10 max-w-5xl w-full">
                   <span className="text-xl md:text-2xl font-black uppercase tracking-widest bg-white border-4 border-black px-6 py-2 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] rotate-[-1deg]">
@@ -221,6 +208,11 @@ export default function Dashboard() {
                   </p>
                 </div>
               )}
+              
+              <button 
+                onClick={() => setIdea(null)} 
+                className="mt-4 mb-12 bg-white border-4 border-black px-12 py-4 font-black uppercase text-2xl md:text-3xl shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all z-10"
+              >
                 Forjar Nova Ideia
               </button>
               
@@ -228,6 +220,9 @@ export default function Dashboard() {
           </div>
           
         ) : idea ? (
+          /* =========================================
+             MODO AULA / IDEATHON (PAINEL COMPLETO)
+             ========================================= */
           <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4">
             
             <div className="flex justify-end print:hidden">
@@ -236,7 +231,6 @@ export default function Dashboard() {
               </button>
             </div>
 
-            {/* Cabeçalho com Termômetro de Inovação */}
             <div className="border-4 border-black bg-white p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
               <div className="mb-6">
                 <div className="flex justify-between items-end mb-2">
@@ -258,7 +252,6 @@ export default function Dashboard() {
               <p className="text-xl font-bold mt-6 text-black/80">{idea.description}</p>
             </div>
             
-            {/* SWOT */}
             <div className="grid md:grid-cols-2 gap-4">
               <div className="border-4 border-black bg-[#7ED957] p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
                 <h4 className="font-black uppercase border-b-2 border-black mb-3 flex items-center gap-2"><Target size={20}/> SWOT: Positivo</h4>
@@ -276,7 +269,6 @@ export default function Dashboard() {
               </div>
             </div>
 
-            {/* FINANCEIRO */}
             {idea.finance && (
               <div className="border-4 border-black bg-white p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
                 <h3 className="text-2xl font-black uppercase mb-4 flex items-center gap-2 border-b-4 border-black pb-2">
@@ -299,7 +291,6 @@ export default function Dashboard() {
               </div>
             )}
 
-            {/* VALIDAÇÃO DESIGN THINKING */}
             {idea.design_thinking && (
               <div className="border-4 border-black bg-white p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] mb-8">
                 <h3 className="text-2xl font-black uppercase mb-6 flex items-center gap-2 border-b-4 border-black pb-2">
@@ -323,7 +314,6 @@ export default function Dashboard() {
                   </div>
                 </div>
 
-                {/* SUGESTÃO DE EXPERIMENTO PRÁTICO */}
                 <div className="mt-6 p-5 border-4 border-black border-dashed bg-[#FFDE59]/10">
                   <h4 className="font-black uppercase text-sm flex items-center gap-2 mb-2">
                     <Target size={18} /> Próximo Passo: O Experimento
@@ -335,7 +325,6 @@ export default function Dashboard() {
               </div>
             )}
 
-            {/* CANVAS */}
             <div className="border-4 border-black bg-white p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] page-break-before">
               <h3 className="text-2xl font-black uppercase mb-6 flex items-center gap-2"><LayoutDashboard /> Business Model Canvas</h3>
               <div className="grid grid-cols-2 gap-4">
@@ -346,7 +335,6 @@ export default function Dashboard() {
               </div>
             </div>
 
-            {/* MVP E KILLER QUESTION */}
             <div className="grid md:grid-cols-2 gap-4">
               <div className="border-4 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
                 <h4 className="font-black uppercase flex items-center gap-2 mb-2 text-[#38B6FF]"><Rocket size={20} /> MVP Core</h4>
