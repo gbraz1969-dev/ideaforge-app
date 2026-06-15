@@ -8,7 +8,6 @@ import { toast } from 'sonner';
 import confetti from 'canvas-confetti';
 
 export default function Dashboard() {
-  // Estado do formulário atualizado com name e phone
   const [form, setForm] = useState({ industry: '', audience: '', extra: '', mode: 'feira', name: '', phone: '' });
   const [loading, setLoading] = useState(false);
   const [idea, setIdea] = useState(null);
@@ -22,7 +21,6 @@ export default function Dashboard() {
   const handleRun = async (e) => {
     e.preventDefault();
     
-    // Travas de segurança e validação
     if (form.mode === 'feira' && (!form.name || !form.phone || !form.industry || !form.audience)) {
       return toast.error("Preencha Nome, WhatsApp, Setor e Público para forjar!");
     } else if (form.mode !== 'feira' && (!form.industry || !form.audience)) {
@@ -38,7 +36,6 @@ export default function Dashboard() {
       setHistory(newHistory);
       localStorage.setItem('forge_history', JSON.stringify(newHistory));
       
-      // MÁQUINA DE LEADS: Salva o contato silenciosamente
       if (form.mode === 'feira') {
         const savedLeads = JSON.parse(localStorage.getItem('uniara_leads') || '[]');
         savedLeads.push({ 
@@ -78,7 +75,7 @@ export default function Dashboard() {
   return (
     <div className="max-w-7xl mx-auto p-6 grid lg:grid-cols-12 gap-8 pb-20">
       
-      {/* COLUNA ESQUERDA: FORMULÁRIO */}
+      {/* COLUNA ESQUERDA */}
       <div className="lg:col-span-4 space-y-6 print:hidden">
         <form onSubmit={handleRun} className="border-4 border-black bg-white p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] space-y-4">
           <h2 className="text-2xl font-black uppercase flex items-center gap-2 italic">
@@ -98,7 +95,6 @@ export default function Dashboard() {
             </select>
           </div>
 
-          {/* CAMPOS EXCLUSIVOS DO MODO FEIRA (CAPTAÇÃO DE LEADS) */}
           {form.mode === 'feira' && (
             <div className="p-4 border-4 border-black bg-[#38B6FF] space-y-3 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] mb-4">
               <h3 className="font-black uppercase text-xs flex items-center gap-2">🎓 Cadastro do Futuro CEO</h3>
@@ -152,12 +148,9 @@ export default function Dashboard() {
         )}
       </div>
 
-      {/* COLUNA DIREITA: RESULTADOS */}
+      {/* COLUNA DIREITA */}
       <div className="lg:col-span-8 print:col-span-12">
         {idea && form.mode === 'feira' ? (
-          /* =========================================
-             MODO FEIRA: OUTDOOR DE ALTO IMPACTO UNIARA
-             ========================================= */
           <div className="fixed inset-0 z-50 bg-[#FFDE59] overflow-y-auto print:static print:h-auto print:overflow-visible">
             <div className="min-h-screen flex flex-col justify-center items-center p-6 md:p-12 text-center animate-in fade-in zoom-in duration-500 relative print:min-h-0 print:justify-start print:py-8">
               
@@ -168,7 +161,7 @@ export default function Dashboard() {
               <img 
                 src="/logo-uniara.png" 
                 alt="UNIARA" 
-                className="md:absolute top-8 right-8 z-20 h-16 md:h-20 bg-white border-4 border-black p-2 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] mb-4 md:mb-0" 
+                className="md:absolute top-8 right-8 z-20 h-16 md:h-20 bg-white border-4 border-black p-2 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] mb-4 md:mb-0 print:hidden" 
               />
 
               <h1 className="text-6xl md:text-8xl font-black uppercase tracking-tighter border-8 border-black p-6 md:p-8 bg-white shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] mb-8 z-10 max-w-7xl mt-4 md:mt-12">
@@ -208,26 +201,20 @@ export default function Dashboard() {
                   </p>
                 </div>
               )}
-              
+
               <div className="flex flex-wrap justify-center gap-4 mt-4 mb-12 z-10 w-full max-w-5xl print:hidden">
-                
-                {/* 1. BOTÃO VOLTAR / REINICIAR */}
                 <button 
                   onClick={() => setIdea(null)} 
                   className="bg-white border-4 border-black px-8 py-4 font-black uppercase text-xl shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all"
                 >
                   Voltar
                 </button>
-
-                {/* 2. BOTÃO para SALVAR PDF */}
                 <button 
                   onClick={handlePrint} 
                   className="bg-[#38B6FF] border-4 border-black px-8 py-4 font-black uppercase text-xl shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all flex items-center gap-2"
                 >
                   <Printer size={24} /> Salvar PDF
                 </button>
-
-                {/* 3. BOTÃO WHATSAPP (Abre link direto pro número do aluno) */}
                 <a 
                   href={`https://wa.me/55${form.phone.replace(/\D/g, '')}?text=Fala%20${encodeURIComponent(form.name)}!%20Sua%20ideia%20genial%20*${encodeURIComponent(idea.title)}*%20nasceu%20hoje%20na%20UNIARA.%20O%20pr%C3%B3ximo%20passo%20para%20virar%20CEO%20%C3%A9%20aqui%20com%20a%20gente%20na%20Administra%C3%A7%C3%A3o!%20%F0%9F%9A%80`}
                   target="_blank"
@@ -236,16 +223,23 @@ export default function Dashboard() {
                 >
                   WhatsApp
                 </a>
+              </div>
 
+              <div className="md:absolute bottom-8 right-8 z-20 bg-white border-4 border-black p-3 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hidden md:flex flex-col items-center">
+                <p className="text-[10px] font-black uppercase mb-2 text-center w-24 leading-tight">
+                  INSCREVA-SE EM ADMINISTRAÇÃO
+                </p>
+                <img 
+                  src={`https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https://www.uniara.com.br/`} 
+                  alt="QR Code Vestibular" 
+                  className="w-24 h-24"
+                />
               </div>
               
             </div>
           </div>
           
         ) : idea ? (
-          /* =========================================
-             MODO AULA / IDEATHON (PAINEL COMPLETO)
-             ========================================= */
           <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4">
             
             <div className="flex justify-end print:hidden">
@@ -299,7 +293,7 @@ export default function Dashboard() {
                 </h3>
                 <div className="grid grid-cols-3 gap-4 text-center">
                   <div className="p-3 border-2 border-black bg-[#F4F4F0]">
-                    <h5 className="text-[10px] font-black uppercase opacity-60">Ticket Médio</h5>
+                        <h5 className="text-[10px] font-black uppercase opacity-60">Ticket Médio</h5>
                     <p className="font-black text-lg">{idea.finance.ticket}</p>
                   </div>
                   <div className="p-3 border-2 border-black bg-[#F4F4F0]">
@@ -372,9 +366,32 @@ export default function Dashboard() {
 
           </div>
         ) : (
-          <div className="border-4 border-black border-dashed h-full min-h-[600px] flex flex-col items-center justify-center bg-white/30 text-center">
-            <Sparkles size={80} className="mb-6 opacity-10 animate-pulse text-black" />
-            <h3 className="text-4xl font-black uppercase opacity-20 tracking-tighter">Pronto para Forjar</h3>
+          <div className="border-4 border-black h-full min-h-[600px] flex flex-col items-center justify-center bg-[#FFDE59] text-center p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] relative overflow-hidden animate-in fade-in duration-700">
+            <div className="absolute top-8 left-8 bg-white border-4 border-black px-4 py-2 font-black uppercase rotate-[-5deg] shadow-[4px_4px_0px_0px_#38B6FF]">
+              ADM UNIARA
+            </div>
+            <div className="absolute bottom-8 right-8 bg-[#FF5757] text-white border-4 border-black px-4 py-2 font-black uppercase rotate-[5deg] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+              Formando CEOs
+            </div>
+            <img 
+              src="/logo-uniara.png" 
+              alt="UNIARA" 
+              className="h-24 md:h-32 mb-8 bg-white border-4 border-black p-3 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] animate-bounce hover:animate-none transition-all" 
+            />
+            <h2 className="text-6xl md:text-8xl font-black uppercase tracking-tighter mb-6 leading-none text-black">
+              FORJE O SEU <br/> <span className="bg-black text-[#FFDE59] px-4 border-4 border-black">IMPÉRIO</span>
+            </h2>
+            <p className="text-xl md:text-3xl font-bold max-w-3xl bg-white border-4 border-black p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] mb-8 leading-tight">
+              Preencha os dados ao lado e deixe a nossa IA criar uma startup bilionária para você administrar.
+            </p>
+            <div className="flex flex-wrap justify-center gap-4 mt-4">
+              <span className="bg-[#38B6FF] border-4 border-black p-3 font-black uppercase flex items-center gap-2 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                <Rocket size={24}/> Inovação
+              </span>
+              <span className="bg-[#7ED957] border-4 border-black p-3 font-black uppercase flex items-center gap-2 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                <DollarSign size={24}/> Negócios
+              </span>
+            </div>
           </div>
         )}
       </div>
