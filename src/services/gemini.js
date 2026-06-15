@@ -9,14 +9,16 @@ export const generateIdea = async (industry, audience, extra, mode) => {
     generationConfig: { responseMimeType: "application/json" }
   });
   
-  const prompt = `Atue como um consultor de negócios experiente. Gere uma ideia de negócio inovadora para o setor de ${industry}, focada no público ${audience}. Contexto adicional: ${extra}.
+ const prompt = `Atue como um consultor de negócios experiente. Gere uma ideia de negócio inovadora para o setor de ${industry}, focada no público ${audience}. Contexto adicional: ${extra}.
+  
+  REGRA DE IDIOMA OBRIGATÓRIA: TODOS os textos, descrições, frases e valores gerados devem ser ESTRITAMENTE em Português do Brasil (PT-BR). NUNCA misture os idiomas.
   
   MUITO IMPORTANTE - CENÁRIO EDUCACIONAL: "${mode}".
   REGRAS DE ESTILO:
   - Se o cenário for "feira": Use técnicas agressivas de copywriting para jovens da Geração Z. O 'pitch' deve ser inspirador. Mostre que eles podem mudar o mundo.
   - Se for "aula" ou "ideathon": Mantenha o tom analítico e aprofundado para debate acadêmico.
   
-  O JSON deve conter EXATAMENTE estas chaves em inglês:
+  O JSON deve conter EXATAMENTE estas chaves em inglês (mas os valores dentro delas DEVEM ser em PT-BR):
   - title (string)
   - pitch (string: uma frase de impacto curta e comercial)
   - description (string: explicação clara do negócio)
