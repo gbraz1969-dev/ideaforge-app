@@ -158,8 +158,8 @@ export default function Dashboard() {
           /* =========================================
              MODO FEIRA: OUTDOOR DE ALTO IMPACTO UNIARA
              ========================================= */
-          <div className="fixed inset-0 z-50 bg-[#FFDE59] overflow-y-auto">
-            <div className="min-h-screen flex flex-col justify-center items-center p-6 md:p-12 text-center animate-in fade-in zoom-in duration-500 relative">
+          <div className="fixed inset-0 z-50 bg-[#FFDE59] overflow-y-auto print:static print:h-auto print:overflow-visible">
+            <div className="min-h-screen flex flex-col justify-center items-center p-6 md:p-12 text-center animate-in fade-in zoom-in duration-500 relative print:min-h-0 print:justify-start print:py-8">
               
               <div className="md:absolute top-8 left-8 bg-black text-white px-6 py-3 font-black text-2xl uppercase shadow-[6px_6px_0px_0px_#38B6FF] rotate-[-5deg] border-4 border-black mb-8 md:mb-0 z-20">
                 Inovação: {idea.innovation_score}%
