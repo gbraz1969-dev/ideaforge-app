@@ -219,7 +219,7 @@ export default function Dashboard() {
                   Voltar
                 </button>
 
-                {/* 2. BOTÃO SALVAR PDF */}
+                {/* 2. BOTÃO para SALVAR PDF */}
                 <button 
                   onClick={handlePrint} 
                   className="bg-[#38B6FF] border-4 border-black px-8 py-4 font-black uppercase text-xl shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all flex items-center gap-2"
